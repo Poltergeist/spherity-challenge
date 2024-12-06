@@ -1,7 +1,7 @@
-// I want a simple test to ensure vitest is working 
+// I want a simple test to ensure vitest is working
 //
-import { expect, test } from 'vitest'
+import { expect, test } from "vitest";
 
-test('Hello world test', () => {
+test("Hello world test", () => {
   expect(true).toBe(true);
 });
