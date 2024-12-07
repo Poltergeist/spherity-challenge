@@ -3,6 +3,7 @@ import { Grid, GridItem } from "@chakra-ui/react";
 import { Code } from "@chakra-ui/react";
 import { Credential } from "./types";
 import { fetchService } from "./services/fetchService";
+import Loader from "@/components/Loader";
 
 function App() {
   const [data, setData] = useState<Credential[] | null>(null);
@@ -18,7 +19,7 @@ function App() {
     fetchServiceInstance.fetchData();
   }, []);
 
-  const Loading = () => data == null && error == null && <div>Loading...</div>;
+  const Loading = () => data == null && error == null && <Loader />;
   const Data = () =>
     data != null && <Code as="pre">{JSON.stringify(data, null, 2)}</Code>;
   const ErrorFrame = () =>
