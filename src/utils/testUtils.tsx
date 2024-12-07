@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import { vi } from "vitest";
-import { Provider } from "./components/ui/provider.tsx";
+import { Provider } from "../components/ui/provider.tsx";
 
 Object.defineProperty(window, "matchMedia", {
   writable: true,

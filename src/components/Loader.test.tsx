@@ -1,6 +1,6 @@
 import { test, describe, expect } from "vitest";
 import Loader from "./Loader";
-import { render, screen } from "../testUtils";
+import { render, screen } from "../utils/testUtils";
 
 describe("renders ", async () => {
   test("without crashing", async () => {

@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { render, screen } from "./testUtils";
+import { render, screen } from "./utils/testUtils";
 import App from "./App";
 import { http, HttpResponse } from "msw";
 
