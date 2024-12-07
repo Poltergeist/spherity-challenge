@@ -48,3 +48,10 @@ export default tseslint.config({
   },
 });
 ```
+
+### Work log
+
+| Time      | Description                                                                                           |
+| --------- | ----------------------------------------------------------------------------------------------------- |
+| 1-2 Hours | setting up structure and basic configuration, also some time was spend on setting up dev environment. |
+| 20 min    | Add Loader component with tests                                                                       |
