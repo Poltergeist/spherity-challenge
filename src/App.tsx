@@ -1,22 +1,36 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import { Grid, GridItem } from "@chakra-ui/react";
+import { Code } from "@chakra-ui/react";
+import { Credential } from "./types";
+import { fetchService } from "./services/fetchService";
 
 function App() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<Credential[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("https://api-vera.susi.spherity.dev/credential-registry/did:web:api-rcs.susi.spherity.dev:did-registry:acme-power-drive-x-1000-3985-cb-1739186-d-8-d").then((res) => res.json()).then((data) => setData(data));
+    const fetchServiceInstance = new fetchService({
+      url: "https://api-vera.susi.spherity.dev/credential-registry/did:web:api-rcs.susi.spherity.dev:did-registry:acme-power-drive-x-1000-3985-cb-1739186-d-8-d",
+      setError,
+      setData,
+    });
+
+    fetchServiceInstance.fetchData();
   }, []);
 
-  console.log(data);
-  const Loading = () => data == null && <div>Loading...</div>;
-  const Data = () => data != null && <div>data</div>;
+  const Loading = () => data == null && error == null && <div>Loading...</div>;
+  const Data = () =>
+    data != null && <Code as="pre">{JSON.stringify(data, null, 2)}</Code>;
+  const ErrorFrame = () =>
+    error != null && <Code as="pre">{JSON.stringify(error, null, 2)}</Code>;
   return (
-    <>
-      <div>
+    <Grid templateColumns="repeat(1, 1fr)" gap="6">
+      <GridItem>
         <Loading />
         <Data />
-      </div>
-    </>
+        <ErrorFrame />
+      </GridItem>
+    </Grid>
   );
 }
 
