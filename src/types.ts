@@ -4,7 +4,7 @@ export interface Credential {
   proof: Proof;
   issuer: string;
   "@context": string[];
-  issuanceDate: Date;
+  issuanceDate: string;
   credentialSubject: CredentialSubject;
 }
 
@@ -124,7 +124,7 @@ export interface TemperatureToleranceTests {
 export interface Proof {
   jws: string;
   type: string;
-  created: Date;
+  created: string;
   proofPurpose: string;
   verificationMethod: string;
 }
