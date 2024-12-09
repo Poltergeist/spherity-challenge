@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Center, Grid, GridItem } from "@chakra-ui/react";
+import { Grid, GridItem, Box, Button } from "@chakra-ui/react";
 import { Code } from "@chakra-ui/react";
 import { Credential } from "./types";
 import { fetchService } from "./services/fetchService";
@@ -25,10 +25,14 @@ function App() {
   const ErrorFrame = () =>
     error != null && <Code as="pre">{JSON.stringify(error, null, 2)}</Code>;
   return (
-    <Grid
-      templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
-      gap="6"
-    >
+    <Grid templateColumns={{ base: "1fr", md: "10ch auto" }} gap="6">
+      <GridItem>
+        <Box minH="100vh" bg="gray.100" _dark={{ bg: "gray.900" }} p="1">
+          <Button variant="outline" w="100%">
+            Outline
+          </Button>
+        </Box>
+      </GridItem>
       <GridItem>
         <Loading />
         <Data />
