@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Grid, GridItem, Box, Button } from "@chakra-ui/react";
+import { Grid, GridItem, Button } from "@chakra-ui/react";
 import { Code } from "@chakra-ui/react";
 import { Credential } from "./types";
 import { fetchService } from "./services/fetchService";
 import Loader from "@/components/Loader";
+import Sidebar from "@/components/Sidebar";
 
 function App() {
   const [data, setData] = useState<Credential[] | null>(null);
@@ -27,11 +28,11 @@ function App() {
   return (
     <Grid templateColumns={{ base: "1fr", md: "10ch auto" }} gap="6">
       <GridItem>
-        <Box minH="100vh" bg="gray.100" _dark={{ bg: "gray.900" }} p="1">
-          <Button variant="outline" w="100%">
+        <Sidebar>
+          <Button variant="outline" w="100%" color="teal.600">
             Outline
           </Button>
-        </Box>
+        </Sidebar>
       </GridItem>
       <GridItem>
         <Loading />
