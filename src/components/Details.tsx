@@ -11,16 +11,38 @@ import {
   Card,
   Input,
 } from "@chakra-ui/react";
-import { Credential } from "../types";
+import { Credential, CredentialSubject } from "../types";
 import { NavLink, useParams } from "react-router";
 import Loader from "@/components/Loader";
 const gridSize = { base: "1fr", lg: "27ch auto" };
 const gridColumns = { base: "1", lg: "1 / span 2" };
 
+const recursiveSearch = (
+  data: CredentialSubject | Partial<CredentialSubject>,
+  search: string,
+): Partial<CredentialSubject> => {
+  const filterFunc = ([key, value]: [string, unknown], _: number) => {
+    if (value == null) return false;
+    if (key.toLowerCase().includes(search)) return true;
+    if (typeof value === "object") {
+      if (Array.isArray(value)) {
+        return value.some((item) => Object.entries(item).some(filterFunc));
+      }
+
+      return Object.entries(value).some(filterFunc);
+    }
+    if ((value + "").toLowerCase().includes(search)) return true;
+    return false;
+  };
+
+  if (data == null) return {};
+  const entries = Object.entries(data).filter(filterFunc);
+  return Object.fromEntries(entries);
+};
+
 const RecursiveDataList: FC<{
   data: Record<string, unknown | string | number | Date>;
-  search: string | null;
-}> = ({ data, search }) => {
+}> = ({ data }) => {
   return (
     <Grid templateColumns={gridSize} borderWidth="1px" p="2">
       {Object.entries(data).map(([key, value]) => {
@@ -42,11 +64,6 @@ const RecursiveDataList: FC<{
                     {value.map((item, index) => (
                       <RecursiveDataList
                         key={index}
-                        search={
-                          search != null && key.toLowerCase().includes(search)
-                            ? null
-                            : search
-                        }
                         data={
                           item as unknown as Record<
                             string,
@@ -74,11 +91,6 @@ const RecursiveDataList: FC<{
               </GridItem>
               <GridItem gridColumn="">
                 <RecursiveDataList
-                  search={
-                    search != null && key.toLowerCase().includes(search)
-                      ? null
-                      : search
-                  }
                   data={
                     value as Record<string, unknown | string | number | Date>
                   }
@@ -86,15 +98,6 @@ const RecursiveDataList: FC<{
               </GridItem>
             </Fragment>
           );
-        }
-
-        if (search != null) {
-          if (
-            !key.toLowerCase().includes(search.toLowerCase()) &&
-            !value?.toString().toLowerCase().includes(search.toLowerCase())
-          ) {
-            return null;
-          }
         }
 
         return (
@@ -118,11 +121,15 @@ const RecursiveDataList: FC<{
 
 const Details = ({ data }: { data: Array<Credential> | null }) => {
   const { id } = useParams();
-  const [search, setSearch] = useState<string | null>(null);
-  const subject = data?.find((item) => item.id === id)?.credentialSubject;
+  const [search, setSearch] = useState<string>("");
+  let subject: Partial<CredentialSubject> | CredentialSubject | undefined =
+    data?.find((item) => item.id === id)?.credentialSubject;
 
   if (subject == null) {
     return <Loader />;
+  }
+  if (search !== "" && subject != null) {
+    subject = recursiveSearch(subject, search);
   }
 
   return (
@@ -135,7 +142,7 @@ const Details = ({ data }: { data: Array<Credential> | null }) => {
             <Card.Body>
               <Input
                 defaultValue={search != null ? search : ""}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => setSearch(e.target.value.toLowerCase())}
               />
             </Card.Body>
           </Card.Root>
@@ -147,7 +154,6 @@ const Details = ({ data }: { data: Array<Credential> | null }) => {
                 unknown | string | number | Date
               >
             }
-            search={search}
           />
           <Box px="1">
             <Link asChild>
