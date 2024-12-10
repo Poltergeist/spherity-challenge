@@ -12,21 +12,30 @@ import {
 import { Credential } from "../types";
 import { NavLink, useParams } from "react-router";
 import Loader from "@/components/Loader";
+const gridSize = { base: "1fr", lg: "27ch auto" };
+const gridColumns = { base: "1", lg: "1 / span 2" };
 
 const RecursiveDataList: FC<{
   data: Record<string, unknown | string | number | Date>;
 }> = ({ data }) => {
   return (
-    <Grid templateColumns="27ch auto" borderWidth="1px" p="2">
+    <Grid templateColumns={gridSize} borderWidth="1px" p="2">
       {Object.entries(data).map(([key, value]) => {
         if (typeof value === "object") {
           if (Array.isArray(value)) {
-            console.log("array", value, key);
             return (
-              <GridItem gridColumn="1 / span 2" key={key}>
-                <Grid templateColumns="27ch auto" borderWidth="1px" p="2">
-                  <GridItem data-info="Array key">{key}</GridItem>
-                  <GridItem data-info="array">
+              <GridItem gridColumn={gridColumns} key={key}>
+                <Grid templateColumns={gridSize} borderWidth="1px" p="2">
+                  <GridItem>
+                    <Text
+                      fontWeight="bold"
+                      color="teal.200"
+                      mb={{ base: "2", lg: "0" }}
+                    >
+                      {key}
+                    </Text>
+                  </GridItem>
+                  <GridItem>
                     {value.map((item) => (
                       <RecursiveDataList
                         data={
@@ -42,10 +51,18 @@ const RecursiveDataList: FC<{
               </GridItem>
             );
           }
-          console.log(key, value, Array.isArray(value));
+
           return (
             <Fragment key={key}>
-              <GridItem data-info="object">{key}</GridItem>
+              <GridItem>
+                <Text
+                  fontWeight="bold"
+                  color="teal.200"
+                  mb={{ base: "2", lg: "0" }}
+                >
+                  {key}
+                </Text>
+              </GridItem>
               <GridItem gridColumn="">
                 <RecursiveDataList
                   data={
@@ -56,10 +73,19 @@ const RecursiveDataList: FC<{
             </Fragment>
           );
         }
+
         return (
           <Fragment key={key}>
-            <GridItem>{key}</GridItem>
-            <GridItem>{value as string}</GridItem>
+            <GridItem>
+              <Text
+                fontWeight="bold"
+                color="teal.200"
+                mb={{ base: "2", lg: "0" }}
+              >
+                {key}
+              </Text>
+            </GridItem>
+            <GridItem pl={{ base: "2", lg: "0" }}>{value as string}</GridItem>
           </Fragment>
         );
       })}

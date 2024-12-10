@@ -91,3 +91,5 @@ Add features like real-time data updates or additional pages for detailed insigh
 | --------- | ----------------------------------------------------------------------------------------------------- |
 | 1-2 Hours | setting up structure and basic configuration, also some time was spend on setting up dev environment. |
 | 20 min    | Add Loader component with tests                                                                       |
+| 1 Hour    | Add Start Page                                                                                        |
+| 2 Hours   | Add Detail page                                                                                       |
