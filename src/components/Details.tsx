@@ -72,7 +72,6 @@ const recursiveDeepFilter = (
     );
   };
 
-  // Cast `data` to `Record<string, unknown>` for processing
   return deepFilter(
     data as Record<string, unknown>,
     search,
@@ -177,12 +176,21 @@ const Details = ({ data }: { data: Array<Credential> | null }) => {
         <Stack>
           <Heading color="teal.600">{id}</Heading>
           <Card.Root>
-            <Card.Header>Suche</Card.Header>
+            <Card.Header>Search</Card.Header>
             <Card.Body>
               <Input
                 defaultValue={search != null ? search : ""}
                 onChange={(e) => setSearch(e.target.value.toLowerCase())}
               />
+              <Box py="1">
+                <Link asChild>
+                  <NavLink to={`/`}>
+                    <Button as={Text} colorPalette="teal" variant="outline">
+                      Back to Overview
+                    </Button>
+                  </NavLink>
+                </Link>
+              </Box>
             </Card.Body>
           </Card.Root>
 
