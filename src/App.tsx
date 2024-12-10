@@ -1,11 +1,21 @@
 import { useState, useEffect } from "react";
-import { Grid, GridItem, Text, Heading, Stack } from "@chakra-ui/react";
+import {
+  Grid,
+  GridItem,
+  Text,
+  Heading,
+  Stack,
+  Link,
+  Box,
+  Button,
+} from "@chakra-ui/react";
 import { Code } from "@chakra-ui/react";
 import { Credential } from "./types";
 import { fetchService } from "./services/fetchService";
 import Loader from "@/components/Loader";
 import KeyValueTable from "@/components/KeyValueTable";
-import { BrowserRouter, Routes, Route } from "react-router";
+import Details from "@/components/Details";
+import { BrowserRouter, Routes, Route, NavLink } from "react-router";
 
 import {
   AccordionItem,
@@ -52,15 +62,32 @@ function App() {
 
                     return (
                       <AccordionItem key={index} value={index + ""}>
-                        <AccordionItemTrigger>
+                        <AccordionItemTrigger color="teal.200">
                           <Text title={item.id}>{item.id.split(":")[2]}</Text>
                         </AccordionItemTrigger>
                         <AccordionItemContent>
                           <Stack>
-                            <Heading py="4">Attributes</Heading>
+                            <Heading py="4" color="teal.600">
+                              Attributes
+                            </Heading>
                             <KeyValueTable item={rest} />
-                            <Heading py="4">Proofs</Heading>
+                            <Heading py="4" color="teal.600">
+                              Proofs
+                            </Heading>
                             <KeyValueTable item={item.proof} />
+                            <Box px="1">
+                              <Link asChild>
+                                <NavLink to={`/detail/${item.id}`}>
+                                  <Button
+                                    as={Text}
+                                    colorPalette="teal"
+                                    variant="outline"
+                                  >
+                                    Details
+                                  </Button>
+                                </NavLink>
+                              </Link>
+                            </Box>
                           </Stack>
                         </AccordionItemContent>
                       </AccordionItem>
@@ -72,6 +99,7 @@ function App() {
             </Grid>
           }
         />
+        <Route path="/detail/:id" element={<Details data={data} />} />
       </Routes>
     </BrowserRouter>
   );
