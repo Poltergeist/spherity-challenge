@@ -17,27 +17,66 @@ import Loader from "@/components/Loader";
 const gridSize = { base: "1fr", lg: "27ch auto" };
 const gridColumns = { base: "1", lg: "1 / span 2" };
 
-const recursiveSearch = (
+const recursiveDeepFilter = (
   data: CredentialSubject | Partial<CredentialSubject>,
   search: string,
 ): Partial<CredentialSubject> => {
-  const filterFunc = ([key, value]: [string, unknown], _: number) => {
-    if (value == null) return false;
-    if (key.toLowerCase().includes(search)) return true;
-    if (typeof value === "object") {
-      if (Array.isArray(value)) {
-        return value.some((item) => Object.entries(item).some(filterFunc));
-      }
+  const deepFilter = (
+    obj: Record<string, unknown>,
+    search: string,
+  ): Partial<Record<string, unknown>> => {
+    return Object.entries(obj).reduce(
+      (acc, [key, value]) => {
+        if (value == null) return acc;
 
-      return Object.entries(value).some(filterFunc);
-    }
-    if ((value + "").toLowerCase().includes(search)) return true;
-    return false;
+        if (key.toLowerCase().includes(search)) {
+          acc[key] = value;
+        } else if (typeof value === "object") {
+          if (Array.isArray(value)) {
+            const filteredArray = value
+              .map((item) =>
+                typeof item === "object" && item !== null
+                  ? deepFilter(item as Record<string, unknown>, search)
+                  : item,
+              )
+              .filter((item) => {
+                return (
+                  (typeof item === "object" && Object.keys(item).length > 0) ||
+                  (typeof item === "string" &&
+                    item.toLowerCase().includes(search))
+                );
+              });
+
+            if (filteredArray.length > 0) {
+              acc[key] = filteredArray;
+            }
+          } else {
+            const filteredObject = deepFilter(
+              value as Record<string, unknown>,
+              search,
+            );
+            if (Object.keys(filteredObject).length > 0) {
+              acc[key] = filteredObject;
+            }
+          }
+        } else if (
+          typeof value === "string" &&
+          value.toLowerCase().includes(search)
+        ) {
+          acc[key] = value;
+        }
+
+        return acc;
+      },
+      {} as Partial<Record<string, unknown>>,
+    );
   };
 
-  if (data == null) return {};
-  const entries = Object.entries(data).filter(filterFunc);
-  return Object.fromEntries(entries);
+  // Cast `data` to `Record<string, unknown>` for processing
+  return deepFilter(
+    data as Record<string, unknown>,
+    search,
+  ) as Partial<CredentialSubject>;
 };
 
 const RecursiveDataList: FC<{
@@ -129,7 +168,7 @@ const Details = ({ data }: { data: Array<Credential> | null }) => {
     return <Loader />;
   }
   if (search !== "" && subject != null) {
-    subject = recursiveSearch(subject, search);
+    subject = recursiveDeepFilter(subject, search);
   }
 
   return (
