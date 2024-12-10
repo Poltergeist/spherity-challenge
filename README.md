@@ -57,3 +57,5 @@ Add features like real-time data updates or additional pages for detailed insigh
 | 2 Hours   | Add Detail page                                                                                       |
 | 2 Hours   | Search functionality                                                                                  |
 ```
+
+date
