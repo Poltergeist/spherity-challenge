@@ -58,7 +58,11 @@ function App() {
                 <Loading />
                 <AccordionRoot collapsible>
                   {data?.map((item: Credential, index: number) => {
-                    const { proof, credentialSubject, ...rest } = item;
+                    const {
+                      proof: _proof,
+                      credentialSubject: _subject,
+                      ...rest
+                    } = item;
 
                     return (
                       <AccordionItem key={index} value={index + ""}>
