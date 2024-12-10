@@ -1,4 +1,4 @@
-import { Fragment, FC } from "react";
+import { Fragment, FC, useState } from "react";
 import {
   Box,
   Grid,
@@ -8,6 +8,8 @@ import {
   Stack,
   Text,
   Heading,
+  Card,
+  Input,
 } from "@chakra-ui/react";
 import { Credential } from "../types";
 import { NavLink, useParams } from "react-router";
@@ -17,7 +19,8 @@ const gridColumns = { base: "1", lg: "1 / span 2" };
 
 const RecursiveDataList: FC<{
   data: Record<string, unknown | string | number | Date>;
-}> = ({ data }) => {
+  search: string | null;
+}> = ({ data, search }) => {
   return (
     <Grid templateColumns={gridSize} borderWidth="1px" p="2">
       {Object.entries(data).map(([key, value]) => {
@@ -29,15 +32,21 @@ const RecursiveDataList: FC<{
                   <GridItem>
                     <Text
                       fontWeight="bold"
-                      color="teal.200"
+                      color={{ _dark: "teal.200", base: "teal.600" }}
                       mb={{ base: "2", lg: "0" }}
                     >
                       {key}
                     </Text>
                   </GridItem>
                   <GridItem>
-                    {value.map((item) => (
+                    {value.map((item, index) => (
                       <RecursiveDataList
+                        key={index}
+                        search={
+                          search != null && key.toLowerCase().includes(search)
+                            ? null
+                            : search
+                        }
                         data={
                           item as unknown as Record<
                             string,
@@ -57,7 +66,7 @@ const RecursiveDataList: FC<{
               <GridItem>
                 <Text
                   fontWeight="bold"
-                  color="teal.200"
+                  color={{ _dark: "teal.200", base: "teal.600" }}
                   mb={{ base: "2", lg: "0" }}
                 >
                   {key}
@@ -65,6 +74,11 @@ const RecursiveDataList: FC<{
               </GridItem>
               <GridItem gridColumn="">
                 <RecursiveDataList
+                  search={
+                    search != null && key.toLowerCase().includes(search)
+                      ? null
+                      : search
+                  }
                   data={
                     value as Record<string, unknown | string | number | Date>
                   }
@@ -74,12 +88,21 @@ const RecursiveDataList: FC<{
           );
         }
 
+        if (search != null) {
+          if (
+            !key.toLowerCase().includes(search.toLowerCase()) &&
+            !value?.toString().toLowerCase().includes(search.toLowerCase())
+          ) {
+            return null;
+          }
+        }
+
         return (
           <Fragment key={key}>
             <GridItem>
               <Text
                 fontWeight="bold"
-                color="teal.200"
+                color={{ _dark: "teal.200", base: "teal.600" }}
                 mb={{ base: "2", lg: "0" }}
               >
                 {key}
@@ -95,16 +118,28 @@ const RecursiveDataList: FC<{
 
 const Details = ({ data }: { data: Array<Credential> | null }) => {
   const { id } = useParams();
+  const [search, setSearch] = useState<string | null>(null);
   const subject = data?.find((item) => item.id === id)?.credentialSubject;
 
   if (subject == null) {
     return <Loader />;
   }
+
   return (
     <Grid>
       <GridItem p="4">
         <Stack>
           <Heading color="teal.600">{id}</Heading>
+          <Card.Root>
+            <Card.Header>Suche</Card.Header>
+            <Card.Body>
+              <Input
+                defaultValue={search != null ? search : ""}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </Card.Body>
+          </Card.Root>
+
           <RecursiveDataList
             data={
               subject as unknown as Record<
@@ -112,6 +147,7 @@ const Details = ({ data }: { data: Array<Credential> | null }) => {
                 unknown | string | number | Date
               >
             }
+            search={search}
           />
           <Box px="1">
             <Link asChild>

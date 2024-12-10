@@ -62,16 +62,24 @@ function App() {
 
                     return (
                       <AccordionItem key={index} value={index + ""}>
-                        <AccordionItemTrigger color="teal.200">
+                        <AccordionItemTrigger
+                          color={{ base: "teal.600", _dark: "teal.200" }}
+                        >
                           <Text title={item.id}>{item.id.split(":")[2]}</Text>
                         </AccordionItemTrigger>
                         <AccordionItemContent>
                           <Stack>
-                            <Heading py="4" color="teal.600">
+                            <Heading
+                              py="4"
+                              color={{ base: "teal.400", _dark: "teal.600" }}
+                            >
                               Attributes
                             </Heading>
                             <KeyValueTable item={rest} />
-                            <Heading py="4" color="teal.600">
+                            <Heading
+                              py="4"
+                              color={{ base: "teal.400", _dark: "teal.600" }}
+                            >
                               Proofs
                             </Heading>
                             <KeyValueTable item={item.proof} />
