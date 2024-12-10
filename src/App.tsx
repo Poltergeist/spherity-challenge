@@ -5,6 +5,7 @@ import { Credential } from "./types";
 import { fetchService } from "./services/fetchService";
 import Loader from "@/components/Loader";
 import KeyValueTable from "@/components/KeyValueTable";
+import { BrowserRouter, Routes, Route } from "react-router";
 
 import {
   AccordionItem,
@@ -37,33 +38,42 @@ function App() {
       </Code>
     );
   return (
-    <Grid templateColumns={{ base: "1fr" }} gap={{ base: "0" }}>
-      <GridItem p="4">
-        <Loading />
-        <AccordionRoot collapsible>
-          {data?.map((item: Credential, index: number) => {
-            const { proof, credentialSubject, ...rest } = item;
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Grid templateColumns={{ base: "1fr" }} gap={{ base: "0" }}>
+              <GridItem p="4">
+                <Loading />
+                <AccordionRoot collapsible>
+                  {data?.map((item: Credential, index: number) => {
+                    const { proof, credentialSubject, ...rest } = item;
 
-            return (
-              <AccordionItem key={index} value={index + ""}>
-                <AccordionItemTrigger>
-                  <Text title={item.id}>{item.id.split(":")[2]}</Text>
-                </AccordionItemTrigger>
-                <AccordionItemContent>
-                  <Stack>
-                    <Heading py="4">Attributes</Heading>
-                    <KeyValueTable item={rest} />
-                    <Heading py="4">Proofs</Heading>
-                    <KeyValueTable item={item.proof} />
-                  </Stack>
-                </AccordionItemContent>
-              </AccordionItem>
-            );
-          })}
-        </AccordionRoot>
-        <ErrorFrame />
-      </GridItem>
-    </Grid>
+                    return (
+                      <AccordionItem key={index} value={index + ""}>
+                        <AccordionItemTrigger>
+                          <Text title={item.id}>{item.id.split(":")[2]}</Text>
+                        </AccordionItemTrigger>
+                        <AccordionItemContent>
+                          <Stack>
+                            <Heading py="4">Attributes</Heading>
+                            <KeyValueTable item={rest} />
+                            <Heading py="4">Proofs</Heading>
+                            <KeyValueTable item={item.proof} />
+                          </Stack>
+                        </AccordionItemContent>
+                      </AccordionItem>
+                    );
+                  })}
+                </AccordionRoot>
+                <ErrorFrame />
+              </GridItem>
+            </Grid>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
