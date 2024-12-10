@@ -34,7 +34,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: install dependencies
         run: npm ci
-      - run: npm build
+      - run: npm run build
       - name: create CNAME file
         run: echo $CNAME >> ./dist/CNAME
         env:
