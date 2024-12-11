@@ -80,9 +80,15 @@ const recursiveDeepFilter = (
 
 const RecursiveDataList: FC<{
   data: Record<string, unknown | string | number | Date>;
-}> = ({ data }) => {
+  root?: boolean;
+}> = ({ data, root = false }) => {
   return (
-    <Grid templateColumns={gridSize} borderWidth="1px" p="2">
+    <Grid
+      templateColumns={gridSize}
+      borderWidth="1px"
+      px={root ? "8" : "1"}
+      py="1"
+    >
       {Object.entries(data).map(([key, value]) => {
         if (typeof value === "object") {
           if (Array.isArray(value)) {
@@ -201,16 +207,19 @@ const Details = ({ data }: { data: Array<Credential> | null }) => {
                 unknown | string | number | Date
               >
             }
+            root={true}
           />
-          <Box px="1">
-            <Link asChild>
-              <NavLink to={`/`}>
-                <Button as={Text} colorPalette="teal" variant="outline">
-                  Back to Overview
-                </Button>
-              </NavLink>
-            </Link>
-          </Box>
+          <Card.Root>
+            <Card.Body>
+              <Link asChild>
+                <NavLink to={`/`}>
+                  <Button as={Text} colorPalette="teal" variant="outline">
+                    Back to Overview
+                  </Button>
+                </NavLink>
+              </Link>
+            </Card.Body>
+          </Card.Root>
         </Stack>
       </GridItem>
     </Grid>
