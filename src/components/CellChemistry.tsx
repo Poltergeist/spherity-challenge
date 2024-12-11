@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { GridItem, Stack, Heading, Table } from "@chakra-ui/react";
-import { gridColumns, titleColor } from "@/components/Details";
+import { gridColumns, titleColor, DataProp } from "@/components/Details";
 
-const CellChemistry: FC<{ data: Record<string, unknown>; title: string }> = ({
+const CellChemistry: FC<{ data: DataProp; title: string }> = ({
   title,
   data,
 }) => {

@@ -1,11 +1,8 @@
 import { FC } from "react";
 import { GridItem, Link, Stack, Text, Heading, Card } from "@chakra-ui/react";
-import { gridColumns, titleColor } from "@/components/Details";
+import { gridColumns, titleColor, DataProp } from "@/components/Details";
 
-const FileCard: FC<{ data: Record<string, unknown>; title: string }> = ({
-  data,
-  title,
-}) => {
+const FileCard: FC<{ data: DataProp; title: string }> = ({ data, title }) => {
   return (
     <GridItem gridColumn={gridColumns} py="4">
       <Stack>
@@ -17,7 +14,7 @@ const FileCard: FC<{ data: Record<string, unknown>; title: string }> = ({
                   <Text>
                     <Link as="a" href={item.fileUrl} color="teal">
                       {item.fileName}
-                    </Link>{" "}
+                    </Link>
                     (Size: {item.fileSize}) - uploaded at {item.uploadDate}
                   </Text>
                 </Card.Body>

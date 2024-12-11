@@ -21,9 +21,14 @@ const gridSize = { base: "1fr", lg: "27ch auto" };
 export const gridColumns = { base: "1", lg: "1 / span 2" };
 export const titleColor = { _dark: "teal.200", base: "teal.600" };
 
+export type DataProp = Record<string, unknown> | Array<Record<string, string>>;
+
 const Components: Record<
   string,
-  FC<{ data: Record<string, unknown>; title: string }>
+  FC<{
+    data: DataProp;
+    title: string;
+  }>
 > = {
   cellChemistry: CellChemistry,
   materialFiles: FileCard,
