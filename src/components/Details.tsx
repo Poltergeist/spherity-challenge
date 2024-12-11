@@ -211,13 +211,15 @@ const Details = ({ data }: { data: Array<Credential> | null }) => {
           />
           <Card.Root>
             <Card.Body>
-              <Link asChild>
-                <NavLink to={`/`}>
-                  <Button as={Text} colorPalette="teal" variant="outline">
-                    Back to Overview
-                  </Button>
-                </NavLink>
-              </Link>
+              <Box py="1">
+                <Link asChild>
+                  <NavLink to={`/`}>
+                    <Button as={Text} colorPalette="teal" variant="outline">
+                      Back to Overview
+                    </Button>
+                  </NavLink>
+                </Link>
+              </Box>
             </Card.Body>
           </Card.Root>
         </Stack>
