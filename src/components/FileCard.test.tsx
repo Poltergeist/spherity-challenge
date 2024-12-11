@@ -1,7 +1,7 @@
 import { test, describe, expect } from "vitest";
 import { render, screen } from "../utils/testUtils";
 import FileCard from "./FileCard";
-const testItem: Record<string, unknown> = [
+const testItem: Record<string, string>[] = [
   {
     fileUrl: "https://jlr-data.pages.dev/waste prevention.pdf",
     fileName: "Preventing and managing waste batteries",
