@@ -14,6 +14,7 @@ const CellChemistry: FC<{ data: Record<string, unknown>; title: string }> = ({
       ...material,
     })),
   );
+  console.log(JSON.stringify(data, null, 2));
   return (
     <GridItem gridColumn={gridColumns} py="4">
       <Stack>

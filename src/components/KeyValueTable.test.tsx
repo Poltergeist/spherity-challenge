@@ -12,7 +12,7 @@ const testItem: Proof = {
   verificationMethod: "verificationMethod",
 };
 
-describe("Sidebar renders ", async () => {
+describe("KeyValueTable renders ", async () => {
   test("without crashing", async () => {
     render(<KeyValueTable item={testItem} />, {});
   });
