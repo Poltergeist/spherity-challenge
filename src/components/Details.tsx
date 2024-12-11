@@ -14,8 +14,22 @@ import {
 import { Credential, CredentialSubject } from "../types";
 import { NavLink, useParams } from "react-router";
 import Loader from "@/components/Loader";
+import CellChemistry from "@/components/CellChemistry";
+import FileCard from "@/components/FileCard";
+
 const gridSize = { base: "1fr", lg: "27ch auto" };
-const gridColumns = { base: "1", lg: "1 / span 2" };
+export const gridColumns = { base: "1", lg: "1 / span 2" };
+export const titleColor = { _dark: "teal.200", base: "teal.600" };
+
+const Components: Record<
+  string,
+  FC<{ data: Record<string, unknown>; title: string }>
+> = {
+  cellChemistry: CellChemistry,
+  materialFiles: FileCard,
+  supplyChainFiles: FileCard,
+  certificationFiles: FileCard,
+};
 
 const recursiveDeepFilter = (
   data: CredentialSubject | Partial<CredentialSubject>,
@@ -90,6 +104,16 @@ const RecursiveDataList: FC<{
       py="1"
     >
       {Object.entries(data).map(([key, value]) => {
+        if (Object.keys(Components).includes(key)) {
+          const Component = Components[key];
+          return (
+            <Component
+              key={key}
+              title={key}
+              data={value as Record<string, unknown>}
+            />
+          );
+        }
         if (typeof value === "object") {
           if (Array.isArray(value)) {
             return (
@@ -98,7 +122,7 @@ const RecursiveDataList: FC<{
                   <GridItem>
                     <Text
                       fontWeight="bold"
-                      color={{ _dark: "teal.200", base: "teal.600" }}
+                      color={titleColor}
                       mb={{ base: "2", lg: "0" }}
                     >
                       {key}

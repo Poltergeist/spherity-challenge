@@ -9,7 +9,9 @@ npm install
 npm run dev
 ```
 
-```
+## File Structure Notes
+
+all components in `src/components/ui` are snippets from chakra that's why they are not tested nor linted.
 
 ## Challenge
 
@@ -56,4 +58,4 @@ Add features like real-time data updates or additional pages for detailed insigh
 | 1 Hour    | Add Start Page                                                                                        |
 | 2 Hours   | Add Detail page                                                                                       |
 | 2 Hours   | Search functionality                                                                                  |
-```
+| 1 Hour    | add custom components for cell Chemistry and Files                                                    |
