@@ -15,7 +15,7 @@ import { fetchService } from "./services/fetchService";
 import Loader from "@/components/Loader";
 import KeyValueTable from "@/components/KeyValueTable";
 import Details from "@/components/Details";
-import { BrowserRouter, Routes, Route, NavLink } from "react-router";
+import { HashRouter, Routes, Route, NavLink } from "react-router";
 
 import {
   AccordionItem,
@@ -48,7 +48,7 @@ function App() {
       </Code>
     );
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route
           path="/"
@@ -113,7 +113,7 @@ function App() {
         />
         <Route path="/detail/:id" element={<Details data={data} />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
